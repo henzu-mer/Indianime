@@ -1,23 +1,21 @@
-export interface Anime {
-  id: string;
-  title: string;
-  description: string;
-  coverImage: string;
-  bannerImage: string;
-  rating: number;
-  year: number;
-  episodes: Episode[];
-  type: 'Series' | 'Movie';
-  genres: string[];
-  language: string[];
-  trending?: boolean;
-  views: number;
-}
-
-export interface Episode {
-  id: string;
-  number: number;
-  title: string;
-  videoUrl: string;
-  thumbnail: string;
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx"
+  },
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

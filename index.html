@@ -1,98 +1,16 @@
-import React from 'react';
-import Hero from '../components/Hero';
-import AnimeCard from '../components/AnimeCard';
-import { ANIME_DATA } from '../data/mockData';
-import { ChevronRight, TrendingUp, Clock, PlayCircle, Star } from 'lucide-react';
-import { Link } from 'react-router-dom';
-
-const Home: React.FC = () => {
-  const trendingAnime = ANIME_DATA.filter(a => a.trending);
-  const latestReleases = [...ANIME_DATA].sort((a, b) => b.year - a.year);
-  const featuredAnime = ANIME_DATA[0]; // For hero
-
-  const top25 = [...ANIME_DATA].sort((a, b) => b.views - a.views).slice(0, 25);
-
-  return (
-    <div className="pb-20">
-      <Hero anime={featuredAnime} />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-10 space-y-12">
-        {/* Trending Section */}
-        <section>
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-white flex items-center">
-              <TrendingUp className="text-[#FF9933] mr-2" />
-              Trending Now
-            </h2>
-            <Link to="/browse?trending=true" className="text-sm text-[#FF9933] hover:underline flex items-center">
-              View All <ChevronRight size={16} />
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
-            {trendingAnime.map(anime => (
-              <AnimeCard key={anime.id} anime={anime} />
-            ))}
-          </div>
-        </section>
-
-        {/* Latest Releases */}
-        <section>
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-white flex items-center">
-              <Clock className="text-[#FF9933] mr-2" />
-              Latest Releases
-            </h2>
-            <Link to="/browse?sort=newest" className="text-sm text-[#FF9933] hover:underline flex items-center">
-              View All <ChevronRight size={16} />
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
-            {latestReleases.map(anime => (
-              <AnimeCard key={anime.id} anime={anime} />
-            ))}
-          </div>
-        </section>
-
-        {/* Top 25 Trending (Based on "Views" / History) */}
-        <section className="bg-white/5 rounded-2xl p-6 border border-white/10">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-bold text-white flex items-center">
-              <div className="w-8 h-8 rounded-lg bg-[#FF9933] flex items-center justify-center mr-3">
-                <span className="text-black font-black italic">25</span>
-              </div>
-              Top 25 Trending
-            </h2>
-            <span className="text-xs text-gray-500 font-medium">UPDATED HOURLY</span>
-          </div>
-          <div className="space-y-4">
-            {top25.map((anime, index) => (
-              <Link 
-                key={anime.id} 
-                to={`/anime/${anime.id}`}
-                className="flex items-center group bg-black/40 hover:bg-black/60 p-3 rounded-xl transition-all border border-transparent hover:border-white/10"
-              >
-                <span className="text-3xl font-black text-white/20 group-hover:text-[#FF9933]/40 w-12 transition-colors">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
-                <div className="w-12 h-16 rounded overflow-hidden mr-4">
-                  <img src={anime.coverImage} alt={anime.title} className="w-full h-full object-cover" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-white font-bold text-sm group-hover:text-[#FF9933] transition-colors">{anime.title}</h3>
-                  <div className="flex items-center space-x-3 mt-1 text-[10px] text-gray-400">
-                    <span className="flex items-center"><Star size={10} className="text-[#FF9933] mr-1" /> {anime.rating}</span>
-                    <span>{anime.type}</span>
-                    <span>{anime.year}</span>
-                  </div>
-                </div>
-                <PlayCircle className="text-white/20 group-hover:text-[#FF9933] transition-colors" size={24} />
-              </Link>
-            ))}
-          </div>
-        </section>
-      </div>
-    </div>
-  );
-};
-
-export default Home;
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Indianime - Your ultimate destination for anime streaming in India. Watch trending anime, series, and movies with multi-language support." />
+    <meta name="keywords" content="anime, streaming, indian, hindi, english, japanese" />
+    <meta name="theme-color" content="#FF9933" />
+    <title>Indianime - Indian Anime Streaming</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
