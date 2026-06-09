@@ -1,0 +1,177 @@
+import React, { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { ANIME_DATA } from '../data/mockData';
+import { 
+  ThumbsUp, ThumbsDown, Share2, Download, MoreHorizontal, 
+  List, Star, Play
+} from 'lucide-react';
+
+const Watch: React.FC = () => {
+  const { id, episodeId } = useParams<{ id: string; episodeId: string }>();
+  const [likes, setLikes] = useState(1200);
+  const [isLiked, setIsLiked] = useState(false);
+
+  const anime = ANIME_DATA.find(a => a.id === id);
+  const episode = anime?.episodes.find(e => e.id === episodeId) || anime?.episodes[0];
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [episodeId]);
+
+  if (!anime || !episode) {
+    return <div className="pt-32 text-center text-white">Video not found</div>;
+  }
+
+  return (
+    <div className="pt-20 pb-10 bg-[#0f0f0f] min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* Main Player Area */}
+          <div className="flex-1">
+            {/* Video Container */}
+            <div className="aspect-video w-full bg-black rounded-xl overflow-hidden shadow-2xl relative group">
+              <iframe
+                src={`${episode.videoUrl}?autoplay=1`}
+                title={episode.title}
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+
+            {/* Video Info */}
+            <div className="mt-4 space-y-4">
+              <h1 className="text-xl md:text-2xl font-bold text-white leading-tight">
+                {anime.title} - Episode {episode.number}: {episode.title}
+              </h1>
+              
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 py-2 border-b border-white/10 pb-6">
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 rounded-full bg-[#FF9933] flex items-center justify-center font-bold text-black">
+                      IA
+                    </div>
+                    <div>
+                      <h3 className="text-white font-bold text-sm">Indianime Official</h3>
+                      <p className="text-gray-400 text-[10px]">1.2M subscribers</p>
+                    </div>
+                  </div>
+                  <button className="bg-white text-black px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-200 transition-colors ml-4">
+                    Subscribe
+                  </button>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <div className="flex items-center bg-white/10 rounded-full overflow-hidden">
+                    <button 
+                      onClick={() => {
+                        setIsLiked(!isLiked);
+                        setLikes(prev => isLiked ? prev - 1 : prev + 1);
+                      }}
+                      className={`flex items-center space-x-2 px-4 py-2 hover:bg-white/10 transition-colors border-r border-white/10 ${isLiked ? 'text-[#FF9933]' : 'text-white'}`}
+                    >
+                      <ThumbsUp size={18} fill={isLiked ? 'currentColor' : 'none'} />
+                      <span className="text-sm font-bold">{likes.toLocaleString()}</span>
+                    </button>
+                    <button className="px-4 py-2 hover:bg-white/10 transition-colors text-white">
+                      <ThumbsDown size={18} />
+                    </button>
+                  </div>
+                  <button className="flex items-center space-x-2 px-4 py-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors text-white">
+                    <Share2 size={18} />
+                    <span className="text-sm font-bold">Share</span>
+                  </button>
+                  <button className="flex items-center space-x-2 px-4 py-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors text-white">
+                    <Download size={18} />
+                    <span className="text-sm font-bold">Download</span>
+                  </button>
+                  <button className="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors text-white">
+                    <MoreHorizontal size={18} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Description Box */}
+              <div className="bg-white/5 rounded-xl p-4 hover:bg-white/10 transition-colors cursor-pointer group">
+                <div className="flex items-center space-x-4 text-sm font-bold text-white mb-1">
+                  <span>145K views</span>
+                  <span>{new Date().toLocaleDateString()}</span>
+                  <div className="flex items-center text-[#FF9933]">
+                    <Star size={14} className="mr-1 fill-current" />
+                    {anime.rating}
+                  </div>
+                </div>
+                <p className="text-sm text-gray-300 line-clamp-2 group-hover:line-clamp-none transition-all">
+                  {anime.description}
+                </p>
+                <button className="text-white text-xs font-bold mt-2">...more</button>
+              </div>
+
+              {/* Comments Mockup */}
+              <div className="pt-6">
+                <div className="flex items-center space-x-6 mb-6">
+                  <h3 className="text-xl font-bold text-white">Comments</h3>
+                  <span className="text-gray-400 font-medium">1,234</span>
+                </div>
+                <div className="flex space-x-4">
+                  <div className="w-10 h-10 rounded-full bg-blue-600 flex-shrink-0" />
+                  <div className="flex-1">
+                    <input 
+                      type="text" 
+                      placeholder="Add a comment..." 
+                      className="w-full bg-transparent border-b border-white/10 pb-2 text-sm focus:outline-none focus:border-white transition-colors"
+                    />
+                    <div className="flex justify-end space-x-4 mt-2">
+                      <button className="text-white text-sm font-bold px-4 py-2 rounded-full hover:bg-white/10">Cancel</button>
+                      <button className="bg-white/10 text-gray-400 text-sm font-bold px-4 py-2 rounded-full">Comment</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Sidebar - Up Next */}
+          <div className="w-full lg:w-[400px] flex-shrink-0">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-bold text-white flex items-center">
+                <List size={20} className="mr-2 text-[#FF9933]" />
+                Up Next
+              </h2>
+            </div>
+            <div className="space-y-3">
+              {anime.episodes.map((ep) => (
+                <Link 
+                  key={ep.id}
+                  to={`/watch/${anime.id}/${ep.id}`}
+                  className={`flex gap-3 group p-2 rounded-lg transition-colors ${ep.id === episodeId ? 'bg-white/10 border border-white/10' : 'hover:bg-white/5'}`}
+                >
+                  <div className="w-40 aspect-video rounded-lg overflow-hidden flex-shrink-0 relative">
+                    <img src={ep.thumbnail} alt={ep.title} className="w-full h-full object-cover" />
+                    <div className="absolute bottom-1 right-1 bg-black/80 text-[10px] text-white px-1 rounded font-bold">
+                      23:45
+                    </div>
+                    {ep.id === episodeId && (
+                      <div className="absolute inset-0 bg-[#FF9933]/20 flex items-center justify-center">
+                        <Play size={20} className="text-[#FF9933] fill-current" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1 overflow-hidden py-1">
+                    <h4 className={`text-sm font-bold line-clamp-2 transition-colors ${ep.id === episodeId ? 'text-[#FF9933]' : 'text-white group-hover:text-[#FF9933]'}`}>
+                      {ep.title}
+                    </h4>
+                    <p className="text-xs text-gray-400 mt-1">Episode {ep.number}</p>
+                    <p className="text-[10px] text-gray-500 mt-0.5">Indianime • 2 hours ago</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Watch;
